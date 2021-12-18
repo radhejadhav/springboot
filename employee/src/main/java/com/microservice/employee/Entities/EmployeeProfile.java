@@ -1,14 +1,8 @@
 package com.microservice.employee.Entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class EmployeeProfile {
  
     private int id;

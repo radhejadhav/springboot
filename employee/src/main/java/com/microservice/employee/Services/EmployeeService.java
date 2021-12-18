@@ -16,7 +16,7 @@ public class EmployeeService {
     public EmployeeProfile getAllEmployee(){
         // Departments departments = new Departments(1,"Computer");
 
-        Departments departments2 = restTemplate.getForEntity("http://localhost:8081/department", Departments.class).getBody();
+        Departments departments2 = restTemplate.getForEntity("http://department-service:8081/department", Departments.class).getBody();
 
         EmployeeProfile employeeProfile = new EmployeeProfile(1,"Radheshyam","radhejadhav@GMAIL.COM",departments2);
 
