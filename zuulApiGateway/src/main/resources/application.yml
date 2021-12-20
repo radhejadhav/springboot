@@ -1,0 +1,24 @@
+server:
+  port: 9090
+  
+spring:  application:    name: api-gateway
+    
+eureka:
+   client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+    
+zuul:  routes:    employee-service:
+      url: http://localhost:8080
+#      path: /employee/**
+      
+  ribbon:
+    eager-load:
+      enabled: true
+    eureka:
+      enabled: true
+  ignoredServices: '*'
+  
+ribbon:  eureka:    enabled: false
