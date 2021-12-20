@@ -9,5 +9,4 @@ class ZuulApiGatewayApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
