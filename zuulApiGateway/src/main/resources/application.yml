@@ -2,33 +2,33 @@ server:
   port: 9090
   
 spring:  application:    name: api-gateway  cloud:    loadbalancer:      retry:        enabled: true
-    
-eureka:
-   client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-    fetch-registry: true
-    register-with-eureka: true
-    
-zuul:
-  prefix: /api
-  host:    connect-timeout-millis: 180000  routes:    employee-service:
-      service-id: EMPLOYEE-SERVICE
+#    
+#eureka:
+#   client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
+#    fetch-registry: true
+#    register-with-eureka: false
+#    
+#zuul:
+#  prefix: /api
+#  host:#    connect-timeout-millis: 180000#  routes:#    employee-service:
+##      service-id: EMPLOYEE-SERVICE
 #      url: http://localhost:8080
-      path: /employee/**   
-      
-    department-service:
-      service-id: DEPARTMENT-SERVICE
+#      path: /employee   
+#      
+#    department-service:
+##      service-id: DEPARTMENT-SERVICE
 #      url: http://localhost:8081
-      path: /department/**
-      
-  ribbon:
-    eager-load:
-      enabled: true
-    eureka:
-      enabled: true
-  ignoredServices: '*'
-  
-ribbon:  eureka:    enabled: false
+#      path: /department/**
+#      
+#  ribbon:
+#    eager-load:
+#      enabled: true
+##    eureka:
+##      enabled: true
+#  ignoredServices: '*'
+#  
+#ribbon:#  eureka:#    enabled: false
     
     

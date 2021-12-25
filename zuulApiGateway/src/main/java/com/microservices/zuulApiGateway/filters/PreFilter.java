@@ -8,36 +8,28 @@ import org.springframework.stereotype.Component;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.netflix.zuul.exception.ZuulException;
 
 @Component
 public class PreFilter extends ZuulFilter {
 	
 	private Logger log = LoggerFactory.getLogger(PreFilter.class);
 
-	@Override
-	public boolean shouldFilter() {
-		return true;
-	}
-
-	@Override
-	public Object run() throws ZuulException {
-		RequestContext ctx = RequestContext.getCurrentContext();
-		HttpServletRequest request = ctx.getRequest();
-		
-		log.info(String.format("%s request %s", request, request.getRequestURI()));
-		
-		return null;
-	}
-
-	@Override
 	public String filterType() {
 		return "pre";
 	}
 
-	@Override
 	public int filterOrder() {
-		return 1;
+		return 6;
 	}
 
+	public boolean shouldFilter() {
+		return true;
+	}
+
+	public Object run() {
+		RequestContext ctx = RequestContext.getCurrentContext();
+		HttpServletRequest request = ctx.getRequest();
+		log.info("Request:"+request+" Request Url: "+request.getRequestURL());
+		return null;
+	}
 }
