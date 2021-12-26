@@ -1,24 +1,29 @@
 package com.authentication.server.controllers;
 
 import com.authentication.server.entities.MyUser;
-import org.apache.catalina.User;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.authentication.server.securityconfig.TokenGenerator;
+import com.authentication.server.services.MyUserDetailService;
+import com.authentication.server.userDto.UserLogin;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
-import javax.management.relation.Role;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+//@RequestMapping()
 public class MyController {
 
-    public String getUser(){
-        MyUser user = new MyUser();
-        user.setUsername("radhejadhav");
-        user.setPassword("radhe123");
-        user.setRoles();
+    @PostMapping("/token")
+    public String token(@RequestBody UserLogin userLogin){
 
-        return "Hello";
+        return TokenGenerator.encode(userLogin.getUsername(),userLogin.getPassword());
+    }
+
+    @GetMapping("/user")
+    public String getUser(){
+//        return this.myUserDetailService.loadUserByUsername("radhejadhav");
+        return "hello Admin";
     }
 }
