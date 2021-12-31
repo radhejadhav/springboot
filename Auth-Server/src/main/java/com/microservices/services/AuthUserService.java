@@ -1,5 +1,7 @@
 package com.microservices.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +40,10 @@ public class AuthUserService implements UserDetailsService {
 		
 		authUser.setPassword(new BCryptPasswordEncoder().encode(authUser.getPassword()));
 		return this.authUserDao.save(authUser);
+	}
+	
+	public List<AuthUser> getAllUser(){
+		return this.authUserDao.findAll();
 	}
 
 }

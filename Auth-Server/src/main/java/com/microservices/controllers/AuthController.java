@@ -1,5 +1,7 @@
 package com.microservices.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,5 +33,9 @@ public class AuthController {
 	public UserDetails addNewUser(@RequestBody AuthUser authUser) {
 		return this.authUserService.addNewUser(authUser);
 	}
-
+	
+	@GetMapping("/all-user")
+	public List<AuthUser> getAllUser(){
+		return this.authUserService.getAllUser();
+	}
 }
