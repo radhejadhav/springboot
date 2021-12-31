@@ -16,16 +16,10 @@ public class PreAuthFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
-//		request.authenticate(response);
 		
-		
+		System.out.println("hello");
 		System.out.println(request.getHeader("Authorization"));
-//		while(request.getAttributeNames().hasMoreElements()) {
-//			System.out.println(request.getAttributeNames().nextElement());
-//		}
-		
-		
+
 		filterChain.doFilter(request, response);
 	}
 
