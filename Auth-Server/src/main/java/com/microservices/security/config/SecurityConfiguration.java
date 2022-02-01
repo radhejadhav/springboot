@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,14 +36,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 				.authorizeRequests()
 				.antMatchers("/user/admin","/user/all-user").hasAnyAuthority("ADMIN")
 				.antMatchers("/user/user").hasAnyAuthority("USER")
-				.antMatchers("/user/home","/user/token", "/user/signup").permitAll()
+				.antMatchers("/user/home","/user/token", "/user/signup","/oauth/token").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-				.httpBasic()
-				.and()
-				.addFilterBefore(preAuthFilter, UsernamePasswordAuthenticationFilter.class);
+				.httpBasic();
+//				.and()
+//				.addFilterBefore(preAuthFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -55,5 +56,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	@Bean
 	public PasswordEncoder  passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	@Bean
+	public AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManagerBean();
 	}
 }

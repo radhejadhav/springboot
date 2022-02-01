@@ -1,28 +1,38 @@
 package com.authentication.server.entities;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.catalina.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Data
-@Getter
-@Setter
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+
+@Entity
 public class MyUser implements UserDetails {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
     private String email;
-    private List<Role> roles;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<UserRoles> roles = new ArrayList<>();
     private String createdBy;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
@@ -35,7 +45,7 @@ public class MyUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                 .collect(Collectors.toList());
     }
 
@@ -71,11 +81,11 @@ public class MyUser implements UserDetails {
         this.email = email;
     }
 
-    public List<Role> getRoles() {
+    public List<UserRoles> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(List<UserRoles> roles) {
         this.roles = roles;
     }
 

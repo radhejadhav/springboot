@@ -6,26 +6,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private MyUserDetailService myUserDetailService;
 
-    @Autowired
-    private AuthenticationManagerBuilder authenticationManager;
-
-    @Autowired
-    private MyAuthFilter myAuthFilter;
+//    @Autowired
+//    private MyAuthFilter myAuthFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -33,21 +29,25 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors().disable()
                 .authorizeRequests()
+                .antMatchers("/authuser").permitAll()
                 .antMatchers(HttpMethod.POST,"/token").permitAll()
+//                .antMatchers("/login").permitAll()
+                .antMatchers("/user").hasAnyRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
-        http
-                .addFilterBefore(myAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .httpBasic()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-//                .authenticationProvider(daoAuthenticationProvider());
-                .userDetailsService(myUserDetailService);
-//                .passwordEncoder(passwordEncoder());
+        		.inMemoryAuthentication()
+        		.withUser("kajal")
+        		.password("kajal123")
+        		.roles("ADMIN");
     }
 
     @Bean
@@ -56,9 +56,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        return authenticationProvider;
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManagerBean();
     }
 }
