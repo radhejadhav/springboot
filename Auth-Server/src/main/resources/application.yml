@@ -1,0 +1,24 @@
+server:
+  port: 8008
+  
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/auth_user
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+      
+security:
+    oauth2:
+      client:
+        client-id: mobile
+        client-secret: hello
+        access-token-validity-seconds: 3600
+        authorized-grant-types: refresh_token, authorization_code, password, client_credentials
+        scope: READ,WRITE
